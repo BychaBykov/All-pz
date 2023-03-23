@@ -16,7 +16,7 @@ int push(queue_1* q, int a) {
 	if (((q->end + 1) % 20 == q->beg) && (q->end != -1))
 		return 0;
 	int i = (q->end + 1) % 20;
-	while ((i != q->beg) && (q->data[(i - 1) % 20] > a)) {
+	while ((i != q->beg) && (q->data[(i - 1) % 20] < a)) {
 		q->data[i] = q->data[(i - 1) % 20];
 		i = (i - 1) % 20;
 	}
@@ -99,4 +99,20 @@ int popM(queue_2* q, int* a) {
 	return 1;
 }
 
+void showQ(queue_1* q) {
+	int a = q->beg;
+	while ((a != q->end) && (q->end != -1)) {
+		printf("%i", q->data[a]);
+		a = (a + 1) % 20;
+	}
+	printf("\n");
+}
 
+void showQM(queue_2* q) {
+	int a = q->beg;
+	while ((a != q->end) && (q->end != -1)) {
+		printf("(%i, %i) ", q->data[a][0], q->data[a][1]);
+		a = (a + 1) % 20;
+	}
+	printf("\n");
+}

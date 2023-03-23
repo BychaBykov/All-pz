@@ -7,13 +7,13 @@ FILE* myfile;
 
 void program(queue_1** A, queue_2** B, queue_2** C, char a, int *j) {
 	if (a == '(') {
-		j++;
+		*j = *j + 1;
 		push(*A, *j);
 	}
 	else if (a == ')') {
 		int k;
 		pop(*A, &k);
-		j++;
+		*j = *j + 1;
 		pushP(*B, k, *j);
 		pushM(*C, k, *j);
 	}
@@ -26,6 +26,7 @@ void vyvod(queue_2* B, queue_2* C) {
 		fprintf_s(myfile, "(%i %i) ", B->data[a][0], B->data[a][1]);
 		a++;
 	}
+	fprintf_s(myfile,"\n");
 	a = 0;
 	while (a <= C->end) {
 		fprintf_s(myfile, "(%i %i) ", C->data[a][0], C->data[a][1]);
@@ -48,8 +49,8 @@ int main() {
 		while (fscanf(myfile, "%c", &sym) != EOF) {
 			program(&A, &B, &C,sym,&j);
 		}
+		vyvod(B, C);
 	}
-	int afafa = 0;
 	return 0;
 }
 
