@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+
 struct queue_1 {
 	int beg = 0;
 	int end = -1;
@@ -99,20 +100,54 @@ int popM(queue_2* q, int* a) {
 	return 1;
 }
 
-void showQ(queue_1* q) {
-	int a = q->beg;
-	while ((a != q->end) && (q->end != -1)) {
-		printf("%i", q->data[a]);
-		a = (a + 1) % 20;
-	}
-	printf("\n");
-}
+void showQ(queue_1* q, FILE* myfile) { 
+	if (q->end != -1) {
+		queue_1 CRINGE;
+		queue_1* COPY = &CRINGE;
 
-void showQM(queue_2* q) {
-	int a = q->beg;
-	while ((a != q->end) && (q->end != -1)) {
-		printf("(%i, %i) ", q->data[a][0], q->data[a][1]);
-		a = (a + 1) % 20;
+		int a;
+		while ((q->beg) != ((q->end)+1)%20) {
+			pop(q, &a);
+			fprintf_s(myfile, "%i ", a);
+			push(COPY, a);
+		}
+		while ((COPY->beg) != ((COPY->end)+1)%20) {
+			pop(COPY, &a);
+			push(q, a);
+		}
+		fprintf_s(myfile, "\n");
 	}
-	printf("\n");
 }
+//void showQMP(queue_2* q, FILE* myfile) {
+//	int a[2];
+//	queue_2 COPY;
+//	if (q->end != -1) {
+//		while ((q->beg) != ((q->end) + 1) % 20) {
+//			popM(q, a);
+//			fprintf_s(myfile, "%i %i ", a[0],a[1]);
+//			pushP(&COPY, a[0], a[1]);
+//		}
+//		while ((COPY->beg) != ((COPY->end) + 1) % 20) {
+//			popM(&COPY, a);
+//			pushP(q, a[0],a[1]);
+//		}
+//		fprintf_s(myfile, "\n");
+//	}
+//}
+
+//void showQMM(queue_2* q, FILE* myfile) {
+//	int a[2];
+//	queue_2* COPY;
+//	if (q->end != -1) {
+//		while ((q->beg) != ((q->end) + 1) % 20) {
+//			popM(q, a);
+//			fprintf_s(myfile, "%i %i ", a[0], a[1]);
+//			pushM(COPY, a[0], a[1]);
+//		}
+//		while ((COPY->beg) != ((COPY->end) + 1) % 20) {
+//			popM(COPY, a);
+//			pushM(q, a[0], a[1]);
+//		}
+//		fprintf_s(myfile, "\n");
+//	}
+//}
