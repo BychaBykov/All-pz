@@ -2,29 +2,30 @@
 #include <fstream>
 #include <vector>
 #include <queue>
-#define _CRT_SECURE_NO_WARNINGS_
+#include "testcrator.cpp"
 using namespace std;
 
 struct Graf {
-	vector<vector<int>> graf;
+	vector<vector<bool>> graf; 
 };
 
 void input(Graf& graf, vector<bool>& marks, int& v);
-int DFS(Graf graf, vector<bool> marks, int v, int prev);
+int BFS(Graf& graf, vector<bool> marks, int v);
 void result(int res);
 
 
 
 void input(Graf& graf, vector<bool>& marks, int& v) {
+	test();
 	ifstream file("graf.txt");
 	int n, m;
 	file >> n >> m >> v;
-	graf.graf.resize(n, vector<int>(n));
+	graf.graf.resize(n, vector<bool>(n));
 	int a, b;
 	for (int i = 0; i < m; i++) {
 		file >> a >> b;
-		graf.graf[a][b] = 1;
-		graf.graf[b][a] = 1;
+		graf.graf[a][b] = true;
+		graf.graf[b][a] = true;
 	}
 	marks.resize(n);
 	file.close();
@@ -38,15 +39,19 @@ void result(int res) {
 		cout << "NOT EXIST";
 }
 
-int BFS(Graf graf, vector<bool> marks, int v, int prev) {
-	int a;
+int BFS(Graf& graf, vector<bool> marks, int v) {
+	int a, prev = v;
+	Graf markO;
+	markO.graf.resize(graf.graf.size(), vector<bool>(graf.graf.size()));
 	queue <int> q;
 	if (marks[v])
 		return 1;
 	marks[v] = true;
-	for (int i = 0; i < graf.graf.size(); i++) 
-		if ((graf.graf[v][i] == 1) && (i != prev))
+	for (int i = 0; i < graf.graf.size(); i++)
+		if ((graf.graf[v][i]) && (i != prev)){
+			markO.graf[v][i] = true;
 			q.push(i);
+			}
 	while (!q.empty())
 	{
 		a = q.front();
@@ -55,11 +60,11 @@ int BFS(Graf graf, vector<bool> marks, int v, int prev) {
 		q.pop();
 		marks[a] = true;
 		for (int i = 0; i < graf.graf.size(); i++)
-			if ((graf.graf[a][i] == 1) && (i != prev))
+			if (graf.graf[a][i] && !markO.graf[i][a]){
 				q.push(i);
-		prev = a;
+				markO.graf[a][i] = true;
+				}
 	}
-	
 }
 
 int main()
@@ -68,6 +73,6 @@ int main()
 	vector<bool> marks;
 	int v;
 	input(graf, marks, v);
-	result(BFS(graf, marks, v, v));
+	result(BFS(graf, marks, v));
 	return 0;
 }
