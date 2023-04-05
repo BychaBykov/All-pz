@@ -40,7 +40,7 @@ void result(int res) {
 }
 
 int BFS(Graf& graf, vector<bool> marks, int v) {
-	int a, prev = v;
+	int a;
 	Graf markO;
 	markO.graf.resize(graf.graf.size(), vector<bool>(graf.graf.size()));
 	queue <int> q;
@@ -48,12 +48,12 @@ int BFS(Graf& graf, vector<bool> marks, int v) {
 		return 1;
 	marks[v] = true;
 	for (int i = 0; i < graf.graf.size(); i++)
-		if ((graf.graf[v][i]) && (i != prev)){
+		if (graf.graf[v][i]){
 			markO.graf[v][i] = true;
 			q.push(i);
 			}
 	while (!q.empty())
-	{
+	{	
 		a = q.front();
 		if (marks[a])
 			return 1;

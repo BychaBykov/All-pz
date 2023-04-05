@@ -1,16 +1,18 @@
 ﻿#include <iostream>
 #include <fstream>
 #include <vector>
+#include <stack>
+#include "testcrator.cpp"
 
 using namespace std;
 
 struct Graf {
-	vector<vector<bool>> graf;
+	vector<vector<bool> > graf;
 };
 
 void input(Graf& graf, vector<bool>& marks, int& v);
-int DFS(Graf& graf,vector<bool>& marks, int v, int prev);
-void result(int res);
+bool DFS(Graf& graf,vector<bool> marks, int v);
+void result(bool res);
 
 int main()
 {
@@ -18,12 +20,12 @@ int main()
 	vector<bool> marks;
 	int v;
 	input(graf,marks,v);
-	result(DFS(graf, marks, v, v));
+	result(DFS(graf, marks, v));
 	return 0;
 }
 
-
 void input(Graf& graf, vector<bool>& marks, int& v) {
+	test();
 	ifstream file("graf.txt");
 	int n, m;
 	file >> n >> m >> v;
@@ -38,22 +40,30 @@ void input(Graf& graf, vector<bool>& marks, int& v) {
 	file.close();
 }
 
-int DFS(Graf& graf, vector<bool>& marks, int v,int prev) {
-	if (marks[v])
-		return 1;
+bool DFS(Graf& graf, vector<bool> marks, int v) {
+	stack <int> q;
+	Graf markO;
+	markO.graf.resize(graf.graf.size(), vector<bool>(graf.graf.size()));
 	marks[v] = true;
-	for (int i = 0; i < graf.graf.size(); i++) {
-		if ((graf.graf[v][i]) && (i != prev)) {
-			int res = DFS(graf, marks, i, v);
-			if (res != -1)
-				return res;
+	q.push(v);
+	int a;
+	while (!q.empty()) {
+		a = q.top();
+		q.pop();
+		cout << a << endl;
+		marks[a] = true;
+		for (int i = 0; i < graf.graf.size(); i++) {
+			if (graf.graf[a][i] && !markO.graf[i][a]) {
+					markO.graf[a][i] = true;
+					q.push(i);
+			}
 		}
 	}
-	return -1;
+	return false;
 }
 
-void result(int res) {
-	if (res == 1)
+void result(bool res) {
+	if (res)
 		cout << "EXIST!";
 	else
 		cout << "NOT EXIST";
