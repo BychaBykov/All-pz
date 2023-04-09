@@ -5,7 +5,7 @@ int const N = 20;
 struct queue_1 {
 	int beg = 0;
 	int end = -1;
-	int data[N];
+	char data[N];
 };
 
 struct queue_2 {
@@ -14,7 +14,7 @@ struct queue_2 {
 	int data[N][2];
 };
 
-int push(queue_1* q, int a) {
+int push(queue_1* q, char a) {
 	if (((q->end + 1) % N == q->beg) && (q->end != -1))
 		return 0;
 	int i = (q->end + 1) % N;
@@ -27,24 +27,12 @@ int push(queue_1* q, int a) {
 	return 1;
 }
 
-int pushM(queue_2* q, int k, int j) {
+int pushM(queue_1* q, char k) {
 	if (((q->end + 1) % N == q->beg) && (q->end != -1))
 		return 0;
-	if (q->end == -1) {
-		q->end++;
-		q->data[q->end][0] = k;
-		q->data[q->end][1] = j;
-		return 1;
-	}
-	int i = (q->end + 1) % N;
-	while ((i != q->beg) && (q->data[(i - 1) % N][1] > j)) {
-		q->data[i][0] = q->data[(i - 1) % N][0];
-		q->data[i][1] = q->data[(i - 1) % N][1];
-		i = (i - 1) % N;
-	}
-	q->data[i][0] = k;
-	q->data[i][1] = j;
 	q->end = (q->end + 1) % N;
+	int i = q->end;
+	q->data[i] = k;
 	return 1;
 }
 
@@ -69,7 +57,7 @@ int pushP(queue_2* q, int k, int j) {
 	return 1;
 }
 
-int pop(queue_1 *q, int* a)
+int pop(queue_1 *q, char* a)
 {
 	if (q->end == -1)
 		return 0;
@@ -103,17 +91,20 @@ int popM(queue_2* q, char* a) {
 
 void showQ(queue_1* q, FILE* myfile) { 
 	if (q->end != -1) {
-		queue_1 CRINGE;
-		queue_1* COPY = &CRINGE;
-		int a;
-		while ((q->beg) != ((q->end)+1)%N) {
-			pop(q, &a);
-			fprintf_s(myfile, "%i ", a);
-			push(COPY, a);
+		int i = 0;
+		queue_1 copy;
+		queue_1* COPY = &copy;
+		char c;
+		while (i<=q->end) {
+			pop(q, &c);
+			fprintf_s(myfile, "%c", c);
+			i = i + 1;
+			pushM(COPY, c);
 		}
-		while ((COPY->beg) != ((COPY->end)+1)%N) {
-			pop(COPY, &a);
-			push(q, a);
+		while (i >= 0) {
+			pop(COPY, &c);
+			pushM(q, c);
+			i = i - 1;
 		}
 		fprintf_s(myfile, "\n");
 	}

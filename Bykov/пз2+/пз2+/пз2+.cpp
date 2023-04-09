@@ -3,39 +3,47 @@
 #include "DeckLib.cpp"
 
 
-FILE* ifile;
-FILE* ofile;
+FILE* file;
+FILE* out;
 
-void program(FILE* ifile) {
+void vyvod(queue_1* B) {
+	file = fopen("output.txt", "w");
+	showQ(B,file);
+}
+
+void program(FILE* file, queue_1* B) {
 	int i = 0;
 	char a;
 	char sym[2];
 	queue_2 c;
 	queue_2* C = &c;
-	ofile = fopen("output.txt", "w");
-	while (fscanf(ifile, "%c", &a) != EOF) {
+	while (fscanf(file, "%c", &a) != EOF) {
 		if (a == '-' || a == '+' || a == '*')
 			pushP(C, i, a);
 		else if (a == ')') {
-			popM(C, sym);
-			fprintf(ofile, "%c", sym[1]);
-			i = i - 1;
+			if (popM(C, sym) != 0){
+				pushM(B, sym[1]);
+				i = i - 1;
+			}
 		}
 		else if (a == '(')
 			i = i + 1;
 		else
-			fprintf(ofile, "%c", a);
+			pushM(B, a);
 	}
 }
 
 
 int main() {
-	ifile = fopen("input.txt","r");
-	if (ifile == NULL) {
-		ofile = fopen("output.txt", "w");
+	file = fopen("input1.txt","r");
+	if (file == NULL) {
+		file = fopen("output.txt", "w");
 	}
 	else {
-		program(ifile);
+		queue_1 b;
+		queue_1* B = &b;
+		program(file, B);
+		vyvod(B);
 	}
 	return 0;
 }

@@ -6,7 +6,7 @@ void test() {
 	ofstream file("graf.txt");
 	int i = 0;
 	int j = 0;
-	int n = 32000;
+	int n = 1000000;
 	file.clear();
 	file << n << ' ' << n - 1 << ' ' << 0 << endl;
 	for (i; i < n - 1; i++) {

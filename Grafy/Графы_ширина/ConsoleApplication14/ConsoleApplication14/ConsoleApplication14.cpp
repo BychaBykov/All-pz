@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <queue>
+#include <time.h>
 #include "testcrator.cpp"
 using namespace std;
 
@@ -73,6 +74,9 @@ int main()
 	vector<bool> marks;
 	int v;
 	input(graf, marks, v);
+	int start = clock();
 	result(BFS(graf, marks, v));
+	int end = clock();
+	cout << endl << "Time: " << end - start;
 	return 0;
 }

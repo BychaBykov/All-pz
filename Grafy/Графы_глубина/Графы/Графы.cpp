@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <stack>
+#include <time.h>
 #include "testcrator.cpp"
 
 using namespace std;
@@ -20,7 +21,10 @@ int main()
 	vector<bool> marks;
 	int v;
 	input(graf,marks,v);
+	int start = clock();
 	result(DFS(graf, marks, v));
+	int end = clock();
+	cout << endl << "Time: " << end - start;
 	return 0;
 }
 
@@ -50,7 +54,6 @@ bool DFS(Graf& graf, vector<bool> marks, int v) {
 	while (!q.empty()) {
 		a = q.top();
 		q.pop();
-		cout << a << endl;
 		marks[a] = true;
 		for (int i = 0; i < graf.graf.size(); i++) {
 			if (graf.graf[a][i] && !markO.graf[i][a]) {
