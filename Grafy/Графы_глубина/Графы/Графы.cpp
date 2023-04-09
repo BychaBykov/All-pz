@@ -1,16 +1,19 @@
 ﻿#include <iostream>
 #include <fstream>
 #include <vector>
+#include <stack>
+#include <time.h>
+#include "testcrator.cpp"
 
 using namespace std;
 
 struct Graf {
-	vector<vector<int>> graf;
+	vector<vector<bool> > graf;
 };
 
 void input(Graf& graf, vector<bool>& marks, int& v);
-int DFS(Graf graf,vector<bool> marks, int v, int prev);
-void result(int res);
+bool DFS(Graf& graf,vector<bool> marks, int v);
+void result(bool res);
 
 int main()
 {
@@ -18,42 +21,52 @@ int main()
 	vector<bool> marks;
 	int v;
 	input(graf,marks,v);
-	result(DFS(graf, marks, v, v));
+	int start = clock();
+	result(DFS(graf, marks, v));
+	int end = clock();
+	cout << endl << "Time: " << end - start;
 	return 0;
 }
 
-
 void input(Graf& graf, vector<bool>& marks, int& v) {
+	test();
 	ifstream file("graf.txt");
 	int n, m;
 	file >> n >> m >> v;
-	graf.graf.resize(n, vector<int>(n));
+	graf.graf.resize(n, vector<bool>(n));
 	int a, b;
 	for (int i = 0; i < m; i++) {
 		file >> a >> b;
-		graf.graf[a][b] = 1;
-		graf.graf[b][a] = 1;
+		graf.graf[a][b] = true;
+		graf.graf[b][a] = true;
 	}
 	marks.resize(n);
 	file.close();
 }
 
-int DFS(Graf graf, vector<bool> marks, int v,int prev) {
-	if (marks[v])
-		return 1;
+bool DFS(Graf& graf, vector<bool> marks, int v) {
+	stack <int> q;
+	Graf markO;
+	markO.graf.resize(graf.graf.size(), vector<bool>(graf.graf.size()));
 	marks[v] = true;
-	for (int i = 0; i < graf.graf.size(); i++) {
-		if ((graf.graf[v][i] == 1) && (i != prev)) {
-			int res = DFS(graf, marks, i, v);
-			if (res != -1)
-				return res;
+	q.push(v);
+	int a;
+	while (!q.empty()) {
+		a = q.top();
+		q.pop();
+		marks[a] = true;
+		for (int i = 0; i < graf.graf.size(); i++) {
+			if (graf.graf[a][i] && !markO.graf[i][a]) {
+					markO.graf[a][i] = true;
+					q.push(i);
+			}
 		}
 	}
-	return -1;
+	return false;
 }
 
-void result(int res) {
-	if (res == 1)
+void result(bool res) {
+	if (res)
 		cout << "EXIST!";
 	else
 		cout << "NOT EXIST";
