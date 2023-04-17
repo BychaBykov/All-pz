@@ -48,17 +48,18 @@ bool DFS(Graf& graf, vector<bool> marks, int v) {
 	stack <int> q;
 	Graf markO;
 	markO.graf.resize(graf.graf.size(), vector<bool>(graf.graf.size()));
-	marks[v] = true;
 	q.push(v);
 	int a;
 	while (!q.empty()) {
 		a = q.top();
+		if (marks[a])
+			return true;
 		q.pop();
 		marks[a] = true;
 		for (int i = 0; i < graf.graf.size(); i++) {
 			if (graf.graf[a][i] && !markO.graf[i][a]) {
-					markO.graf[a][i] = true;
-					q.push(i);
+				markO.graf[a][i] = true;
+				q.push(i);
 			}
 		}
 	}

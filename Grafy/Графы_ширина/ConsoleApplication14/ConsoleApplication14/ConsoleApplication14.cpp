@@ -11,13 +11,13 @@ struct Graf {
 };
 
 void input(Graf& graf, vector<bool>& marks, int& v);
-int BFS(Graf& graf, vector<bool> marks, int v);
+bool BFS(Graf& graf, vector<bool> marks, int v);
 void result(int res);
 
 
 
 void input(Graf& graf, vector<bool>& marks, int& v) {
-	test();
+	//test();
 	ifstream file("graf.txt");
 	int n, m;
 	file >> n >> m >> v;
@@ -32,7 +32,6 @@ void input(Graf& graf, vector<bool>& marks, int& v) {
 	file.close();
 }
 
-
 void result(int res) {
 	if (res == 1)
 		cout << "EXIST!";
@@ -40,13 +39,11 @@ void result(int res) {
 		cout << "NOT EXIST";
 }
 
-int BFS(Graf& graf, vector<bool> marks, int v) {
+bool BFS(Graf& graf, vector<bool> marks, int v) {
 	int a;
 	Graf markO;
 	markO.graf.resize(graf.graf.size(), vector<bool>(graf.graf.size()));
 	queue <int> q;
-	if (marks[v])
-		return 1;
 	marks[v] = true;
 	for (int i = 0; i < graf.graf.size(); i++)
 		if (graf.graf[v][i]){
@@ -57,7 +54,7 @@ int BFS(Graf& graf, vector<bool> marks, int v) {
 	{	
 		a = q.front();
 		if (marks[a])
-			return 1;
+			return true;
 		q.pop();
 		marks[a] = true;
 		for (int i = 0; i < graf.graf.size(); i++)
@@ -66,6 +63,7 @@ int BFS(Graf& graf, vector<bool> marks, int v) {
 				markO.graf[a][i] = true;
 				}
 	}
+	return false;
 }
 
 int main()
