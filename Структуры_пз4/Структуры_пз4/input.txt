@@ -1,0 +1,7 @@
+int main() {
+	int a;
+	int b;
+	float c;
+	bool arr[15];
+	c = a + b;
+}
