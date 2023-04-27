@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 a int 4 0 
 b int 4 0 
 c float 4 0 
 arr array 1 15 bool
+=======
+a int 4 0 
+b int 4 0 
+c float 4 0 
+arr array 1 15 bool
+>>>>>>> c339b50151b86bc54f79cbe78e4fed5952948852

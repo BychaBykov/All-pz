@@ -1,7 +1,16 @@
+<<<<<<< HEAD
 int main() {
 	int a;
 	int b;
 	float c;
 	bool arr[15];
 	c = a + b;
+=======
+int main() {
+	int a;
+	int b;
+	float c;
+	bool arr[15];
+	c = a + b;
+>>>>>>> c339b50151b86bc54f79cbe78e4fed5952948852
 }
