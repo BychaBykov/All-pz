@@ -22,6 +22,10 @@ int find(int k, elem* t) {
 	int counter = 0;
 	while (strcmp(t[k % N].name, "")) {
 		k += 1;
+		counter += 1;
+		if (counter == N) {
+			return -1;
+		}
 	}
 	return k;
 }
@@ -50,7 +54,7 @@ void input(elem* t) {
 	char type[7];
 	int mem;
 	int k;
-	int key;
+	int key = 0;
 	char type_k[7];
 	char a[250];
 	types data[4];
@@ -65,22 +69,24 @@ void input(elem* t) {
 	fscanf_s(myfile, "%s", a, sizeof(a));
 	while (strcmp(a, "{"))
 		fscanf_s(myfile, "%s", a, sizeof(a));
-	while (fscanf(myfile, "%s", a) != EOF) {
+	while (fscanf(myfile, "%s", a) != EOF && key != -1) {
 		for (int i = 0; i < 4; i++) {
 			if (!strcmp(a, data[i].D)) {
-				strcpy_s(type, a);
-				fscanf_s(myfile, " %[^[;]", a, sizeof(a));
-				strcpy_s(name, a);
 				key = h(name);
 				key = find(key, t);
-				t[key].mem = data[i].size;
-				strcpy_s(t[key].name, name);
-				strcpy_s(t[key].type, type);
-				if (fgetc(myfile) == '[') {
-					fscanf_s(myfile, "%d", &k);
-					t[key].k = k;
-					strcpy_s(t[key].type, "array");
-					strcpy_s(t[key].type_k, type);
+				if (key != -1) {
+					strcpy_s(type, a);
+					fscanf_s(myfile, " %[^[;]", a, sizeof(a));
+					strcpy_s(name, a);
+					t[key].mem = data[i].size;
+					strcpy_s(t[key].name, name);
+					strcpy_s(t[key].type, type);
+					if (fgetc(myfile) == '[') {
+						fscanf_s(myfile, "%d", &k);
+						t[key].k = k;
+						strcpy_s(t[key].type, "array");
+						strcpy_s(t[key].type_k, type);
+					}
 				}
 			}
 		}
