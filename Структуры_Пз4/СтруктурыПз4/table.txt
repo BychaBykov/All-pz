@@ -1,0 +1,10 @@
+0 a3 int 4 0 NONE
+1 b3 array 8 12 double
+2 c3 array 4 2 float
+3 a4 array 1 12 bool
+13 a1 int 4 0 NONE
+14 b1 double 8 0 NONE
+15 c1 float 4 0 NONE
+16 a2 int 4 0 NONE
+17 b2 double 8 0 NONE
+18 c2 float 4 0 NONE

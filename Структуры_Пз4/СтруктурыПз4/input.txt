@@ -1,0 +1,17 @@
+int main()
+{
+	int a1;
+	double b1;
+	float c1;
+	int a2;
+	double b2;
+	float c2;
+	int a3;
+	double b3[12];
+	float c3[2];
+	bool a4[12];
+	a1 = a2 + b1;
+	if( a1 < a2 ) {
+		a1 = 0;
+	}
+}
