@@ -65,20 +65,26 @@ void input(elem* t){
 	}
 	myfile = fopen("code.txt", "r");
 	char a[25];
-	char prev[25];
-	while (fscanf_s(myfile, "%s ", a,sizeof(a)) != EOF) {
-		if (!strcmp(a, "=")) {
-			add(t, prev);
-			while (fscanf_s(myfile, " %[^[; ] ", a, sizeof(a)) != 0) {
-				if (strcmp(a, "+")) add(t, a);
+	char* prev;
+	fgets(a, 25, myfile);
+	while (!feof(myfile)) {
+		if (strstr(a, "=")) {
+			prev = strtok(a, " ");
+ 			while (prev != NULL) {
+				add(t, prev);
+				prev = strtok(NULL, " ");
+				prev = strtok(NULL, " ;");
 			}
 		}
-		else if (!strcmp(a, "if(")) {
-			while (fscanf_s(myfile, " %[^[) ]", a, sizeof(a)) != 0) {
-				add(t, a);
+		else if (strstr(a, "if(")) {
+			prev = strtok(a, " ");
+			while (prev != NULL) {
+				add(t, prev);
+				prev = strtok(NULL, " ");
+				prev = strtok(NULL, " ){");
 			}
 		}
-		strcpy_s(prev, a);
+		fgets(a, 25, myfile);
 	}
 	vyvod(t);
 }
@@ -91,11 +97,12 @@ void piv(elem* t, int L, int R, int* ri, int* rj)
 	look += 1;
 	while (i <= j)
 	{
+		cmp += 1;
 		while (t[i].num > c.num) {
 			i++;
 			cmp += 1;
 		}
-		while (t[j].num < c.num) {
+		while (t[j].num <= c.num) {
 			j--;
 			cmp += 1;
 		}
