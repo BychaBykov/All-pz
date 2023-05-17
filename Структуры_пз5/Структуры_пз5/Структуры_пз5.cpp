@@ -5,13 +5,17 @@
 const int N = 19;
 FILE* myfile;
 
+int look = 0;
+int cmp = 0;
+int beg = 0;
+
 struct elem {
 	char name[256];
 	char type[15];
 	int mem;
 	int k;
 	char type_k[15];
-	int num = 0;
+	int num = -1;
 };
 
 struct types {
@@ -27,9 +31,22 @@ int h(char* a) {
 	return (ans % N);
 }
 
+void vyvod(elem* t) {
+	int i = 0;
+	myfile = fopen("output.txt", "a");
+	while (i < N) {
+		if (strcmp(t[i].name, ""))
+			fprintf(myfile, "%i %s %s %i %i %s %i\n", i, t[i].name, t[i].type, t[i].mem, t[i].k, t[i].type_k, t[i].num);
+		i++;
+	}
+
+	fprintf(myfile, "%i %i %i\n\n", look, cmp, beg);
+}
+
 void add(elem* t, char* a) {
 	int k = h(a);
 	int counter = 0;
+	sscanf(a, "%[^[{; ]", a);
 	while (strcmp(t[k%N].name, a) && counter!= N) {
 		k +=1;
 		counter += 1;
@@ -44,6 +61,7 @@ void input(elem* t){
 	int i = 0;
 	while (fscanf(myfile, "%i ", &i) != EOF) {
 		fscanf(myfile, "%s %s %i %i %s", t[i].name, t[i].type, &t[i].mem, &t[i].k,t[i].type_k);
+		if (strcmp(t[i].name, "")) t[i].num = 0;
 	}
 	myfile = fopen("code.txt", "r");
 	char a[25];
@@ -62,17 +80,25 @@ void input(elem* t){
 		}
 		strcpy_s(prev, a);
 	}
+	vyvod(t);
 }
 
-void Delete(elem* t, int L, int R, int* ri, int* rj)
+void piv(elem* t, int L, int R, int* ri, int* rj)
 {
 	elem c = t[(L+R)/2];
 	int i = L;
 	int j = R;
+	look += 1;
 	while (i <= j)
 	{
-		while (t[i].num > c.num) i++;
-		while (t[j].num < c.num) j--;
+		while (t[i].num > c.num) {
+			i++;
+			cmp += 1;
+		}
+		while (t[j].num < c.num) {
+			j--;
+			cmp += 1;
+		}
 		if (i <= j)
 		{
 			elem x = t[i];
@@ -80,32 +106,26 @@ void Delete(elem* t, int L, int R, int* ri, int* rj)
 			t[j] = x;
 			i++;
 			j--;
+			beg += 3;
 		}
 	}
 	*ri = i;
 	*rj = j;
 }
+
 void Quicksort(elem* t, int L, int R)
 {
 	int i;
 	int j;
 	if (R - L > 0)
 	{
-		Delete(t, L, R, &i, &j);
+		piv(t, L, R, &i, &j);
 		if (L < j) Quicksort(t, L, j);
 		if (i < R) Quicksort(t, i, R);
 	}
 }
 
-void vyvod(elem* t) {
-	int i = 0;
-	myfile = fopen("output.txt", "w");
-	while( i < N) {
-		if (strcmp(t[i].name, ""))
-		fprintf(myfile, "%i %s %s %i %i %s %i\n", i, t[i].name, t[i].type, t[i].mem, t[i].k, t[i].type_k, t[i].num);
-		i++;
-	}
-}
+
 
 int main()
 {
