@@ -78,6 +78,7 @@ void input(elem* t){
 		}
 		else if (strstr(a, "if(")) {
 			prev = strtok(a, " ");
+			prev = strtok(NULL," ){");
 			while (prev != NULL) {
 				add(t, prev);
 				prev = strtok(NULL, " ");
@@ -102,18 +103,21 @@ void piv(elem* t, int L, int R, int* ri, int* rj)
 			i++;
 			cmp += 1;
 		}
-		while (t[j].num <= c.num) {
+		while (t[j].num < c.num) {
 			j--;
 			cmp += 1;
 		}
 		if (i <= j)
 		{
-			elem x = t[i];
-			t[i] = t[j];
-			t[j] = x;
+			cmp++;
+			if (t[i].num != t[j].num) {
+				elem x = t[i];
+				t[i] = t[j];
+				t[j] = x;
+				beg += 3;
+			}
 			i++;
 			j--;
-			beg += 3;
 		}
 	}
 	*ri = i;
